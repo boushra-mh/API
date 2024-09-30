@@ -43,19 +43,18 @@ class OrderController extends Controller
         try{
             $location = Location::where('user_id', Auth::id())->first();
         
-            $request->validate([
+            // $request->validate([
     
-                'date_of_delivery'=>'required',
-                'order_items'=>'required',
-                'total_price'=>'required',
-                'quantity'=>'required'
+            //     'date_of_delivery'=>'required',
+            //     'order_items'=>'required',
+            //     'total_price'=>'required',
+
     
-            ]);
+            // ]);
     
             $order = new Order();
-            $order->user_id = Auth::user();
+            $order->user_id = Auth::user()->id;
             $order->location_id=$location->id;
-            $order->quantity = $request->quantity ;
             $order->total_price = $request->total_price;
             $order->date_of_delivery =$request ->date_of_delivery;
             $order->save();
@@ -64,12 +63,13 @@ class OrderController extends Controller
             {
     
                 $items = new OrderItems();
+                $items->order_id=$order->id;
                 $items ->price =$order_items ['price'];
                 $items->product_id = $order_items ['product_id'];
                 $items ->quantity = $order_items ['quantity'];
                 $items->save();
-                $product = Product::where('product_id',$order_items ['product_id'])->first();
-                $product -> quantity-=$order_items['quantity'];
+                $product = Product::where('id',$order_items ['product_id'])->first();
+                $product->amount-=$order_items['quantity'];
     
       
     
@@ -112,22 +112,18 @@ class OrderController extends Controller
     public function get_user_orders($id)
 
     {
-        $orders = Order::where('user_id', $id)
-        ::with('items',function($query)
+        $orders = Order::with('item')->where('user_id', $id)->get();
+
+        if($orders)
         {
-            $query->OrderBy('created_at','desc');
+            foreach($orders as $order)
+            { 
+                foreach( $order->item as $order_items)
+                $product =Product::where('id', $order_items->product_id)->pluck('name');
+                $order_items->product_name = $product[0];
 
-        })->get();
-
-        // if($orders)
-        // {
-        //     foreach($orders->items as $order)
-        //     // {
-        //     //     $product =Product::where('id', $order->product_id)->pluck('name');
-        //     //     $order->product_name = $product[0];
-
-        //     // }
-        // }
+            }
+        }
 
     }
 
@@ -138,7 +134,7 @@ class OrderController extends Controller
         $order = Order::find($id);
         if($order)
         {
-            $order->update(['status',$request->input('status')]);
+            $order->update(['status'=>$request->status]);
 
             return response()->json('Status changed successfully',201) ;
         

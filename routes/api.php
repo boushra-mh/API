@@ -24,46 +24,51 @@ use App\Http\Controllers\ProductController;
 Route::post('register',[AuthController::class,'register']);
 Route::post('login', [AuthController::class,'login']);
 Route::post('refresh', [AuthController::class,'refresh']);
-Route::post('logout', [AuthController::class,'logout']);;
+Route::post('logout', [AuthController::class,'logout']);
 
-Route::controller(BrandsController::class)->group(function ()
-{
-    Route::get('index','index');
-    Route::get('show/{id}','show');
-    Route::post('store','store');
-    Route::put('update/{id}','update_brand');
-    Route::delete('delete_brand/{id}','delete_brand');
 
-});
-Route::controller(CategoryController::class)->group(function ()
-{
-    Route::get('index','index');
-    Route::get('show/{id}','show');
-    Route::post('store','store');
-    Route::put('update/{id}','update_category');
-    Route::delete('delete_category/{id}','delete_category');
+//  CRUD Brands
 
+Route::prefix('brands')->group(function() {
+    Route::get('index', [BrandsController::class, 'index']);
+    Route::put('update/{id}', [BrandsController::class, 'update_brand']);
+    Route::post('store', [BrandsController::class, 'store']);
+    Route::delete('delete_brand/{id}', [BrandsController::class, 'delete_brand']);
 });
 
-Route::controller(LocationController::class)->group(function ()
-{
-    Route::post('store','store');
-    Route::put('update/{id}','update_location');
-    Route::delete('delete_location/{id}','delete_location');
+
+// CRUD Category
+
+Route::prefix('category')->group(function() {
+    Route::get('index', [CategoryController::class, 'index']);
+    Route::put('update/{id}', [CategoryController::class, 'update_category']);
+    Route::post('store', [CategoryController::class, 'store']);
+    Route::delete('delete_category/{id}', [CategoryController::class, 'delete_category']);
 });
 
-Route::controller(ProductController::class)->group(function (){
-    Route::get('index','index');
-    Route::get('show/{id}','show');
-    Route::post('store','store');
-    Route::put('update/{id}','update_product');
-    Route::delete('delete_product/{id}','delete_product');
-}); 
- Route::controller(OrderController::class)->group(function (){
-    Route::get('index','index');
-    Route::get('show/{id}','show');
-    Route::post('store','store');
-    Route::get('get_order_items/{id}','get_order_items');
-    Route::get('get_user_orders/{id}','get_user_orders');
-    Route::put('change_order_status/{id}','change_order_status');
- });
+// CRUD Location
+
+Route::prefix('location')->group(function() {
+    Route::get('index', [LocationController::class, 'index']);
+    Route::put('update/{id}', [LocationController::class, 'update_location']);
+    Route::post('store', [LocationController::class, 'store']);
+    Route::delete('delete_location/{id}', [LocationController::class, 'delete_location']);
+});
+
+Route::prefix('product')->group(function() {
+    Route::get('index', [ProductController::class, 'index']);
+    Route::put('update/{id}', [ProductController::class, 'update_product']);
+    Route::post('store', [ProductController::class, 'store']);
+    Route::delete('delete_product/{id}', [ProductController::class, 'delete_product']);
+});
+
+// CRUD Order
+Route::prefix('order')->group(function() {
+    Route::get('index', [OrderController::class, 'index']);
+    Route::get('show/{id}', [OrderController::class, 'show']);
+    Route::post('store', [OrderController::class, 'store']);
+    Route::get('get_user_orders/{id}', [OrderController::class, 'get_user_orders']);
+    Route::get('get_order_items/{id}', [OrderController::class, 'get_order_items/{id}']);
+    Route::post('change_order_status/{id}', [OrderController::class, 'change_order_status']);
+});
+

@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->enum('status',['Delieverd','Pending','Canceled','Accepted','Out Of Delivery']);
-            $table->bigInteger('user_id');
+            $table->bigInteger('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete();
-            $table->bigInteger('location_id');
+            $table->bigInteger('location_id')->unsigned();
             $table->foreign('location_id')->references('id')->on('locations')->cascadeOnDelete();
             $table->double('total_price',12,2);
             $table->date('date_of_delivery');

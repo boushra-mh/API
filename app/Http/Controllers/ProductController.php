@@ -13,7 +13,7 @@ class ProductController extends Controller
 {
     public function index()
     {
-        $products=Product::all()->paginate(10);
+        $products=Product::all();
         if($products)
         {
             return response()->json(array('products' => $products),200);

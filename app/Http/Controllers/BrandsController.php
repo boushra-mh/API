@@ -33,10 +33,10 @@ class BrandsController extends Controller
     public function store(Request $request)
     {
         try{
-            $validated = $request->validate([
+            // $validated = $request->validate([
 
-                'name'=>'required|unique:brands,name',
-            ]);
+            //     'name'=>'required|unique:brands,name',
+            // ]);
 
             $brand= new Brands();
             $brand->name=$request->name;

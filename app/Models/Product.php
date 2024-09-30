@@ -17,23 +17,23 @@ class Product extends Model
         'is_trendy',
         'is_available',
         'category_id',
-        'brand_id'
+        'brand_id',
 
     ];
 
     public function category()
     {
-        return $this->belongsTo('App\Models\Categories','category_id');
+        return $this->belongsTo(Categories::class,'category_id');
     }
     public function brand()
     {
-            return $this->belongsTo('App\Models\Brands','brand_id');
+            return $this->belongsTo(Brands::class,'brand_id');
     }
 
     public function items()
     {
 
-        return $this->hasMany('App\Models\OrderItems');
+        return $this->hasMany(OrderItems::class);
 
     }
 }

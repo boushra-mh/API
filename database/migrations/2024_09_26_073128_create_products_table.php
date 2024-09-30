@@ -20,10 +20,10 @@ return new class extends Migration
             $table->integer('amount');
             $table->boolean('is_trendy')->default(false);
             $table->boolean('is_available')->default(true);
-            $table->bigInteger('category_id');
-            $table->bigInteger('brand_id');
-            $table->foreignId('category_id')->references('id')->on('category')->cascadeOnDelete();
-            $table->foreignId('brand_id')->references('id')->on('brands')->cascadeOnDelete();
+            $table->bigInteger('category_id')->nullable()->unsigned();
+            $table->bigInteger('brand_id')->nullable()->unsigned();
+            $table->foreign('category_id')->references('id')->on('category')->onDelete('cascade');
+            $table->foreign('brand_id')->references('id')->on('brands')->onDelete('cascade');
         
 
             $table->timestamps();

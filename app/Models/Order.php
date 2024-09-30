@@ -18,13 +18,19 @@ class Order extends Model
     public function user()
     {
         
-      return $this->belongsTo('App\Models\User','user_id');
+      return $this->belongsTo(User::class,'user_id');
         
     }
     public function location()
     {
         
-      return $this->belongsTo('App\Models\Location','location_id');
+      return $this->belongsTo(Location::class,'location_id');
         
+    }
+    public function item()
+    {
+
+        return $this->belongsToManyMany(OrderItems::class)->withTimestamps();
+
     }
 }

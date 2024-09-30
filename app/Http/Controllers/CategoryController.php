@@ -39,7 +39,7 @@ class CategoryController extends Controller
             $validated = $request->validate([
 
                 'name'=>'required|unique:category,name',
-                'image'=>'required',
+                //'image'=>'required',
             ]);
 
             $category= new Categories();
